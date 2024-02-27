@@ -33,7 +33,7 @@ fi
 
 echo -n "Testing bad data (missing) - "
 ./maze missing_maze.txt > tmp
-if grep -q "Please input a file with a maze in it, as this one doesn't possess one." tmp;
+if grep -q "Measurements of the maze aren't valid." tmp;
 then 
     echo -e "\e[32mPASS\e[0m"
 else 
@@ -41,7 +41,7 @@ else
 fi
 
 echo -n "Testing bad data (wrong measurements) - "
-./maze invalid_maze_1.txt > tmp
+./maze bad_measurements.txt > tmp
 if grep -q "Measurements of the maze aren't valid." tmp;
 then 
     echo -e "\e[32mPASS\e[0m"
@@ -50,12 +50,21 @@ else
 fi
 
 echo -n "Testing bad data (a hash that's not suppose to be there) - "
-./maze invalid_maze_2.txt > tmp
+./maze random_hash.txt > tmp
 if grep -q "Measurements of the maze aren't valid." tmp;
 then 
     echo -e "\e[32mPASS\e[0m"
 else 
     echo -e "\e[31mFAIL\e[0m"
+fi
+
+echo -n "Testing bad data (if there is no S and/or no E) - "
+./maze missing_start_end.txt > tmp
+if grep -q "start or end point missing" tmp; 
+then
+  echo -e "\e[32mPASS\e[0m" 
+else
+  echo -e "\e[31mFAIL\e[0m"
 fi
 
 echo -n "Testing if file loaded succesfully - "
@@ -98,20 +107,16 @@ fi
 
 echo -n "Testing if player hit a wall - "
 echo "W\nD\nM" | ./maze valid_maze.txt > tmp
-if grep -q "Thou has hit a wall. Please retry." tmp;
-if
-    then
+if grep -q "Thou has hit a wall. Please retry." tmp; then
         echo -e "\e[32mPASS\e[0m"
         echo -n "Testing if player location hasn't moved on the map - "
-        if grep -q "##X##" tmp;
-        then 
+        if grep -q "##X##" tmp; then
             echo -e "\e[32mPASS\e[0m"
-        else 
+        else
             echo -e "\e[31mFAIL\e[0m" 
         fi
-else 
-    echo -e "\e[31mFAIL\e[0m" 
-fi
+else
+    echo -e "\e[31mFAIL\e[0m"
 fi
 
 echo -n "Testing if player moved out of bounds - "
@@ -141,7 +146,7 @@ else
     echo -e "\e[31mFAIL\e[0m" 
 fi
 
-echo -n "Testing if program gives a message when finished with maze"
+echo -n "Testing if program gives a message when finished with maze - "
 echo "W\nW\nD\nW\nW" | ./maze valid_maze.txt > tmp
 if grep -q "Well done, thou has completed the maze." tmp;
 then 

@@ -39,8 +39,8 @@ void readFile(char *filename, struct maze *maze)
   // Check if measurements are fine
   if (!validLenghts(maze))
   {
-    printf("Measurements of the maze aren't valid.");
-    return;
+    printf("Measurements of the maze aren't valid.\n");
+    exit(1);
   }
 
   // Dynamically allocate width and height to maze[][]
@@ -55,11 +55,6 @@ void startingPoint(struct maze *maze)
 
 // Movement menu (W, A, S, D) including the map (M)
 char menu()
-{
-}
-
-// Take user input and do movement or map depending on input
-char takeInput(char input)
 {
 }
 
@@ -79,25 +74,30 @@ void movement(struct maze *maze, char move)
   int newX = maze->playerX;
   int newY = maze->playerY;
 
-  switch (tolower(move))
+  switch (move)
   {
   case 'a':
+  case 'A':
     //code
     break;
 
   case 'w':
-    //code
+  case 'W':
+    printf("ur gay\n");
     break;
 
   case 's':
+  case 'S':
     //code
     break;
 
   case 'd':
+  case 'D':
     //code
     break;
 
   case 'm':
+  case 'M':
     map();
     break;
 
@@ -137,9 +137,10 @@ int main(int argc, char *argv[])
   {
     menu();
     printf("Choose one of the options: ");
-    char move;
-    takeInput(move);
-    movement(&maze, move);
+    char input;
+    input = getchar();
+    while (getchar() != '\n');
+    movement(&maze, input);
   }
   printf("Well done, thou has completed the maze.");
   
